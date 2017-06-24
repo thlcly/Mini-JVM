@@ -43,6 +43,7 @@ public class LocalVariableTableAttribute extends AbstractAttribute {
             int descriptorIndex = byteToInteger(Arrays.copyOfRange(content, start + 6, start + 8));
             int index = byteToInteger(Arrays.copyOfRange(content, start + 8, start + 10));
             localVariableTables.add(new LocalVariableTable(startPC, length, nameIndex, descriptorIndex, index));
+            start += 10;
         }
         return new LocalVariableTableAttribute(attributeNameIndex, attributeLength, lineVariableTableLength, localVariableTables);
     }

@@ -62,6 +62,6 @@ public abstract class AbstractCommand {
         return Optional.ofNullable(cmd).orElse(opCode);
     }
 
-    // TODO: 17/6/17 执行指令
+    //  执行指令
     public abstract void execute(StackFrame frame, ExecutionResult result);
 }

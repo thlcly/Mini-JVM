@@ -39,7 +39,7 @@ public class InvokeVirtualCommand extends TwoOperandCommand {
         String className = methodRefConstant.getClassConstant().getClassName();
         String methodName = methodRefConstant.getNameAndTypeConstant().getName();
 
-        // TODO: 17/6/23 没有实现System.out.println方法，  所以也不用建立新的栈帧， 直接调用Java的方法， 打印出来即可. 实际的JVM是要实现这个打印等的底层功能的, 因为我的JVM是用java实现的, 所以调用即可, 如果是用c写的就要调用c的打印方法
+        // 没有实现System.out.println方法, 所以也不用建立新的栈帧, 直接调用Java的方法, 打印出来即可. 实际的JVM是要实现这个打印等的底层功能的, 因为我的JVM是用java实现的, 所以调用即可, 如果是用c++写的就要调用c++的打印方法, 所以这里就是用java实现jvm的一个自包含关系的地方, 虽然很难理解, 但是确实是符合逻辑的, 你用什么语言实现就调什么语言的方法, 只是我用的语言比较特殊, 就是java
         if (_isSystemOutPrintlnMethod(className, methodName)) {
             JavaObject jo = frame.getOperandStack().pop();
             String value = jo.toString();
