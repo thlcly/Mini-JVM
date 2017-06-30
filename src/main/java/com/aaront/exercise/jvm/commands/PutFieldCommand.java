@@ -31,7 +31,7 @@ public class PutFieldCommand extends TwoOperandCommand {
     @Override
     public void execute(StackFrame frame, ExecutionResult result) {
         // TODO: 17/6/23 需要对字段以及其所属对象进行校验, 比如是否是protected, 是否是final, 是否是父类的成员, 值和字段的类型是否匹配等
-        int constantIndex = ByteUtils.byteToInteger(new byte[]{(byte) operand1, (byte) operand2});
+        int constantIndex = ByteUtils.byte2Int(new byte[]{(byte) operand1, (byte) operand2});
         ConstantPool pool = frame.getPool();
         FieldRefConstant fieldRefConstant = (FieldRefConstant)pool.getConstantInfo(constantIndex);
         NameAndTypeConstant nameAndTypeConstant = (NameAndTypeConstant) pool.getConstantInfo(fieldRefConstant.getNameAndTypeIndex());

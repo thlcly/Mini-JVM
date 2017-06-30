@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.aaront.exercise.jvm.utils.string.ByteUtils.byteToInteger;
+import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2Int;
 
 /**
  * @author tonyhui
@@ -33,15 +33,15 @@ public class LocalVariableTableAttribute extends AbstractAttribute {
     }
 
     public static LocalVariableTableAttribute generateLocalVariableTableAttribute(byte[] content, int attributeNameIndex, int attributeLength) {
-        int lineVariableTableLength = byteToInteger(Arrays.copyOfRange(content, 0, 2));
+        int lineVariableTableLength = byte2Int(Arrays.copyOfRange(content, 0, 2));
         List<LocalVariableTable> localVariableTables = new ArrayList<>(lineVariableTableLength);
         int start = 2;
         for (int i = 0; i < lineVariableTableLength; i++) {
-            int startPC = byteToInteger(Arrays.copyOfRange(content, start, start + 2));
-            int length = byteToInteger(Arrays.copyOfRange(content, start + 2, start + 4));
-            int nameIndex = byteToInteger(Arrays.copyOfRange(content, start + 4, start + 6));
-            int descriptorIndex = byteToInteger(Arrays.copyOfRange(content, start + 6, start + 8));
-            int index = byteToInteger(Arrays.copyOfRange(content, start + 8, start + 10));
+            int startPC = byte2Int(Arrays.copyOfRange(content, start, start + 2));
+            int length = byte2Int(Arrays.copyOfRange(content, start + 2, start + 4));
+            int nameIndex = byte2Int(Arrays.copyOfRange(content, start + 4, start + 6));
+            int descriptorIndex = byte2Int(Arrays.copyOfRange(content, start + 6, start + 8));
+            int index = byte2Int(Arrays.copyOfRange(content, start + 8, start + 10));
             localVariableTables.add(new LocalVariableTable(startPC, length, nameIndex, descriptorIndex, index));
             start += 10;
         }

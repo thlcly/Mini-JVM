@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.aaront.exercise.jvm.utils.string.ByteUtils.byteToInteger;
+import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2Int;
+import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2UnsingedInt;
 
 /**
  * @author tonyhui
@@ -54,18 +55,20 @@ public class CodeAttribute extends AbstractAttribute {
 
     private static CodeAttribute _parseCodeAttribute(byte[] content, ClassFile classFile) {
         ConstantPool pool = classFile.getConstantPool();
-        int maxStack = byteToInteger(Arrays.copyOfRange(content, 0, 2));
-        int maxLocals = byteToInteger(Arrays.copyOfRange(content, 2, 4));
-        int codeLength = byteToInteger(Arrays.copyOfRange(content, 4, 8));
+        int maxStack = byte2Int(Arrays.copyOfRange(content, 0, 2));
+        int maxLocals = byte2Int(Arrays.copyOfRange(content, 2, 4));
+        // TODO: 17/6/30 这里先暂时强转, 后序数组拷贝要优化, 要支持long型的
+        int codeLength = (int) byte2UnsingedInt(Arrays.copyOfRange(content, 4, 8));
         byte[] code = Arrays.copyOfRange(content, 8, 8 + codeLength);
-        int exceptionTableLength = byteToInteger(Arrays.copyOfRange(content, 8 + codeLength, 10 + codeLength));
+        int exceptionTableLength = byte2Int(Arrays.copyOfRange(content, 8 + codeLength, 10 + codeLength));
         List<ExceptionAttribute> exceptions = _parseExceptionInfo(Arrays.copyOfRange(content, 10 + codeLength, 10 + codeLength + exceptionTableLength * 8));
-        int subAttributeCount = byteToInteger(Arrays.copyOfRange(content, 10 + codeLength + exceptionTableLength * 8, 10 + codeLength + exceptionTableLength * 8 + 2));
+        int subAttributeCount = byte2Int(Arrays.copyOfRange(content, 10 + codeLength + exceptionTableLength * 8, 10 + codeLength + exceptionTableLength * 8 + 2));
         List<AbstractAttribute> subAttrs = new ArrayList<>(subAttributeCount);
         int subAttributeStartIndex = 10 + codeLength + exceptionTableLength * 8 + 2;
         for (int i = 0; i < subAttributeCount; i++) {
-            int index = byteToInteger(Arrays.copyOfRange(content, subAttributeStartIndex, subAttributeStartIndex + 2));
-            int length = byteToInteger(Arrays.copyOfRange(content, subAttributeStartIndex + 2, subAttributeStartIndex + 6));
+            int index = byte2Int(Arrays.copyOfRange(content, subAttributeStartIndex, subAttributeStartIndex + 2));
+            // TODO: 17/6/30 这里先暂时强转, 后序数组拷贝要优化, 要支持long型的
+            int length = (int) byte2UnsingedInt(Arrays.copyOfRange(content, subAttributeStartIndex + 2, subAttributeStartIndex + 6));
             String subAttrName = pool.getUTF8String(index);
             if (subAttrName.equals("LineNumberTable")) {
                 LineNumberTableAttribute lineNumberTableAttribute = LineNumberTableAttribute.generateLineNumberTableAttribute(Arrays.copyOfRange(content, subAttributeStartIndex + 6, subAttributeStartIndex + 6 + length), index, length);

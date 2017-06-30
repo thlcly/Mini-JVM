@@ -6,12 +6,17 @@ package com.aaront.exercise.jvm.utils.string;
  */
 public class ByteUtils {
 
-    public static int byteToInteger(byte[] content) {
-        if(content.length == 2)
-            return (content[0] << 8 | content[1]) & 0xFF;
-        if(content.length == 4)
-            return (content[0] << 24 | content[1] << 16 | content[2] << 8 | content[3]) & 0xFF;
+    // TODO: 17/6/30 这两个转换方法后序可以优化
+    public static int byte2Int(byte[] content) {
+        if(content.length >=4) throw new RuntimeException("长度不能超过4");
+        if (content.length == 2)
+            return ((content[0] << 8) | (content[1])) & 0x0000ffff;
         return 0;
+    }
+
+    public static long byte2UnsingedInt(byte[] content) {
+        if(content.length != 4) throw new RuntimeException("长度必须为4");
+        return (content[0] << 24 | content[1] << 16 | content[2] << 8 | content[3]) & 0x00000000ffffffffL;
     }
 
     public static String byteToHexString(byte[] codes) {

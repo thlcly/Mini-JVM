@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.aaront.exercise.jvm.utils.string.ByteUtils.byteToInteger;
+import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2Int;
 
 /**
  * @author tonyhui
@@ -28,12 +28,12 @@ public class LineNumberTableAttribute extends AbstractAttribute {
 
 
     public static LineNumberTableAttribute generateLineNumberTableAttribute(byte[] content, int index, int length) {
-        int lineNumberTableLength = byteToInteger(Arrays.copyOfRange(content, 0, 2));
+        int lineNumberTableLength = byte2Int(Arrays.copyOfRange(content, 0, 2));
         List<LineNumberTable> lineNumberTables = new ArrayList<>(lineNumberTableLength);
         int start = 2;
         for (int i = 0; i < lineNumberTableLength; i++) {
-            int startPC = byteToInteger(Arrays.copyOfRange(content, start, start + 2));
-            int lineNumber = byteToInteger(Arrays.copyOfRange(content, start + 2, start + 4));
+            int startPC = byte2Int(Arrays.copyOfRange(content, start, start + 2));
+            int lineNumber = byte2Int(Arrays.copyOfRange(content, start + 2, start + 4));
             lineNumberTables.add(new LineNumberTable(startPC, lineNumber));
             start += 4;
         }

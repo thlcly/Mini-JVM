@@ -33,7 +33,7 @@ public class InvokeSpecialCommand extends TwoOperandCommand {
     @Override
     public void execute(StackFrame frame, ExecutionResult result) {
         // TODO: 17/6/23 要对方法的类型进行校验
-        int methodIndex = ByteUtils.byteToInteger(new byte[]{(byte) operand1, (byte) operand2});
+        int methodIndex = ByteUtils.byte2Int(new byte[]{(byte) operand1, (byte) operand2});
         MethodRefConstant methodRefConstant = (MethodRefConstant) frame.getPool().getConstantInfo(methodIndex);
         if(methodRefConstant.getClassConstant().getClassName().equals("java/lang/Object")) {
             // TODO: 17/6/23 这里不处理Object的构造方法, 因为程序现在不会去扫描系统PATH路径下class path, 所以是找不到Ojbect类的, 因此从这里也可以知道为什么要把class path配置到系统的PATH目录中了

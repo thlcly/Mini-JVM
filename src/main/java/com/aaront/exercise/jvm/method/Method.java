@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.aaront.exercise.jvm.utils.string.ByteUtils.byteToInteger;
+import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2Int;
+import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2UnsingedInt;
 
 /**
  * @author tonyhui
@@ -51,13 +52,13 @@ public class Method {
 
     public static Method generateMethod(byte[] content, int start, ClassFile classFile) {
         ConstantPool pool = classFile.getConstantPool();
-        int accessFlag = byteToInteger(Arrays.copyOfRange(content, start, start + 2));
+        int accessFlag = byte2Int(Arrays.copyOfRange(content, start, start + 2));
         List<MethodAccessFlag> methodAccessFlags = _parseMethodAccessFlag(accessFlag);
-        int nameIndex = byteToInteger(Arrays.copyOfRange(content, start + 2, start + 4));
+        int nameIndex = byte2Int(Arrays.copyOfRange(content, start + 2, start + 4));
         String name = pool.getUTF8String(nameIndex);
-        int descriptorIndex = byteToInteger(Arrays.copyOfRange(content, start + 4, start + 6));
+        int descriptorIndex = byte2Int(Arrays.copyOfRange(content, start + 4, start + 6));
         String descriptor = pool.getUTF8String(descriptorIndex);
-        int attributesCount = byteToInteger(Arrays.copyOfRange(content, start + 6, start + 8));
+        int attributesCount = byte2Int(Arrays.copyOfRange(content, start + 6, start + 8));
         Pair<List<AbstractAttribute>, Integer> pair = _parseMethodAttribute(content, start + 8, attributesCount, classFile);
         return new Method(accessFlag, methodAccessFlags, nameIndex, name, descriptorIndex, descriptor, attributesCount, pair.getLeft(), pool, start, pair.getRight());
     }
@@ -113,8 +114,9 @@ public class Method {
         List<AbstractAttribute> attributes = new ArrayList<>();
         ConstantPool pool = classFile.getConstantPool();
         for (int i = 1; i <= count; i++) {
-            int index = byteToInteger(Arrays.copyOfRange(content, start, start + 2));
-            int length = byteToInteger(Arrays.copyOfRange(content, start + 2, start + 6));
+            int index = byte2Int(Arrays.copyOfRange(content, start, start + 2));
+            // TODO: 17/6/30 这里先暂时强转, 后序数组拷贝要优化, 要支持long型的
+            int length = (int) byte2UnsingedInt(Arrays.copyOfRange(content, start + 2, start + 6));
             String attributeName = pool.getUTF8String(index);
             if (attributeName.equals("Code")) {
                 CodeAttribute codeAttribute = CodeAttribute.generateCodeAttribute(Arrays.copyOfRange(content, start + 6, start + 6 + length), index, length, classFile);

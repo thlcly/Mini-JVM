@@ -28,7 +28,7 @@ public class NewObjectCommand extends TwoOperandCommand {
      */
     @Override
     public void execute(StackFrame frame, ExecutionResult result) {
-        int classIndex = ByteUtils.byteToInteger(new byte[]{(byte) operand1, (byte) operand2});
+        int classIndex = ByteUtils.byte2Int(new byte[]{(byte) operand1, (byte) operand2});
         ConstantPool pool = frame.getPool();
         ClassConstant constant = (ClassConstant)pool.getConstantInfo(classIndex);
         String className = constant.getClassName();

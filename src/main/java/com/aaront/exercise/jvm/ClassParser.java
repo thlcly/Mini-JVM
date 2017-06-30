@@ -14,7 +14,7 @@ import java.util.*;
 
 import static com.aaront.exercise.jvm.accessflag.ClassAccessFlag.*;
 import static com.aaront.exercise.jvm.utils.string.ByteUtils.byteToHexString;
-import static com.aaront.exercise.jvm.utils.string.ByteUtils.byteToInteger;
+import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2Int;
 
 /**
  * @author tonyhui
@@ -70,8 +70,8 @@ public class ClassParser {
      * 解析编译java源文件的jdk的版本
      */
     private void _parseVersion(byte[] contents) {
-        int minor = byteToInteger(new byte[]{contents[0], contents[1]});
-        int major = byteToInteger(new byte[]{contents[2], contents[3]});
+        int minor = byte2Int(new byte[]{contents[0], contents[1]});
+        int major = byte2Int(new byte[]{contents[2], contents[3]});
         classFile.setMinorVersion(minor);
         classFile.setMajorVersion(major);
     }
@@ -80,7 +80,7 @@ public class ClassParser {
      * 解析常量池
      */
     private int _parseConstantPool(byte[] contents) {
-        Integer constantPoolLength = byteToInteger(Arrays.copyOfRange(contents, CONSTANT_POOL_LENGTH_START, CONSTANT_POOL_LENGTH_END));
+        Integer constantPoolLength = byte2Int(Arrays.copyOfRange(contents, CONSTANT_POOL_LENGTH_START, CONSTANT_POOL_LENGTH_END));
         int pos = CONSTANT_POOL_START;
         List<AbstractConstant> abstractConstant = new ArrayList<>();
         ConstantPool pool = new ConstantPool(abstractConstant);
@@ -90,7 +90,7 @@ public class ClassParser {
             pos = pos + 1;
             switch (tag) {
                 case CONSTANT_UTF8: {
-                    int length = byteToInteger(Arrays.copyOfRange(contents, pos, pos + 2));
+                    int length = byte2Int(Arrays.copyOfRange(contents, pos, pos + 2));
                     byte[] content = Arrays.copyOfRange(contents, pos + 2, pos + 2 + length);
                     UTF8Constant utf8Constant = new UTF8Constant(pool, tag, length, content);
                     abstractConstant.add(utf8Constant);
@@ -114,30 +114,30 @@ public class ClassParser {
                     break;
                 }
                 case CONSTANT_CLASS: {
-                    int nameIndex = byteToInteger(Arrays.copyOfRange(contents, pos, pos + 2));
+                    int nameIndex = byte2Int(Arrays.copyOfRange(contents, pos, pos + 2));
                     ClassConstant classConstant = new ClassConstant(pool, tag, nameIndex);
                     abstractConstant.add(classConstant);
                     pos += 2;
                     break;
                 }
                 case CONSTANT_STRING: {
-                    Integer stringIndex = byteToInteger(Arrays.copyOfRange(contents, pos, pos + 2));
+                    Integer stringIndex = byte2Int(Arrays.copyOfRange(contents, pos, pos + 2));
                     StringConstant stringConstant = new StringConstant(pool, tag, stringIndex);
                     abstractConstant.add(stringConstant);
                     pos += 2;
                     break;
                 }
                 case CONSTANT_FIELD_REF: {
-                    Integer classIndex = byteToInteger(Arrays.copyOfRange(contents, pos, pos + 2));
-                    Integer nameAndTypeIndex = byteToInteger(Arrays.copyOfRange(contents, pos + 2, pos + 4));
+                    Integer classIndex = byte2Int(Arrays.copyOfRange(contents, pos, pos + 2));
+                    Integer nameAndTypeIndex = byte2Int(Arrays.copyOfRange(contents, pos + 2, pos + 4));
                     FieldRefConstant fieldRefConstant = new FieldRefConstant(pool, tag, classIndex, nameAndTypeIndex);
                     abstractConstant.add(fieldRefConstant);
                     pos += 4;
                     break;
                 }
                 case CONSTANT_METHOD_REF: {
-                    Integer classIndex = byteToInteger(Arrays.copyOfRange(contents, pos, pos + 2));
-                    Integer nameAndTypeIndex = byteToInteger(Arrays.copyOfRange(contents, pos + 2, pos + 4));
+                    Integer classIndex = byte2Int(Arrays.copyOfRange(contents, pos, pos + 2));
+                    Integer nameAndTypeIndex = byte2Int(Arrays.copyOfRange(contents, pos + 2, pos + 4));
                     MethodRefConstant methodRefConstant = new MethodRefConstant(pool, tag, classIndex, nameAndTypeIndex);
                     abstractConstant.add(methodRefConstant);
                     pos += 4;
@@ -148,8 +148,8 @@ public class ClassParser {
                     break;
                 }
                 case CONSTANT_NAME_AND_TYPE: {
-                    Integer nameIndex = byteToInteger(Arrays.copyOfRange(contents, pos, pos + 2));
-                    Integer descriptorIndex = byteToInteger(Arrays.copyOfRange(contents, pos + 2, pos + 4));
+                    Integer nameIndex = byte2Int(Arrays.copyOfRange(contents, pos, pos + 2));
+                    Integer descriptorIndex = byte2Int(Arrays.copyOfRange(contents, pos + 2, pos + 4));
                     NameAndTypeConstant nameAndTypeConstant = new NameAndTypeConstant(pool, tag, nameIndex, descriptorIndex);
                     abstractConstant.add(nameAndTypeConstant);
                     pos += 4;
@@ -179,7 +179,7 @@ public class ClassParser {
      * 解析Class的修饰符
      */
     private int _parseClassAccessFlag(byte[] contents, int accessFlagStart) {
-        int accessFlag = byteToInteger(Arrays.copyOfRange(contents, accessFlagStart, accessFlagStart + 2));
+        int accessFlag = byte2Int(Arrays.copyOfRange(contents, accessFlagStart, accessFlagStart + 2));
         List<ClassAccessFlag> classAccessFlags = new ArrayList<>();
         if ((accessFlag & ACC_PUBLIC.getCode()) != 0) {
             classAccessFlags.add(ACC_PUBLIC);
@@ -207,8 +207,8 @@ public class ClassParser {
      * 解析Class和其父类在常量池中的索引
      */
     private int _parseClassIndex(byte[] contents, int classIndexStart) {
-        int thisClassIndex = byteToInteger(Arrays.copyOfRange(contents, classIndexStart, classIndexStart + 2));
-        int superClassIndex = byteToInteger(Arrays.copyOfRange(contents, classIndexStart + 2, classIndexStart + 4));
+        int thisClassIndex = byte2Int(Arrays.copyOfRange(contents, classIndexStart, classIndexStart + 2));
+        int superClassIndex = byte2Int(Arrays.copyOfRange(contents, classIndexStart + 2, classIndexStart + 4));
         ClassIndex classIndex = new ClassIndex(thisClassIndex, superClassIndex);
         classFile.setClassIndex(classIndex);
         return classIndexStart + 4;
@@ -218,11 +218,13 @@ public class ClassParser {
      * 解析Class实现的接口
      */
     private int _parseInterface(byte[] contents, int interfaceIndexStart) {
-        int length = byteToInteger(Arrays.copyOfRange(contents, interfaceIndexStart, interfaceIndexStart + 2));
+        int length = byte2Int(Arrays.copyOfRange(contents, interfaceIndexStart, interfaceIndexStart + 2));
         List<Integer> interfaceIndexes = new ArrayList<>();
+        int start = interfaceIndexStart + 2;
         for (int i = 1; i <= length; i++) {
-            int index = byteToInteger(Arrays.copyOfRange(contents, interfaceIndexStart + 2, interfaceIndexStart + 2 + 2 * i));
+            int index = byte2Int(Arrays.copyOfRange(contents, start, start + 2 * i));
             interfaceIndexes.add(index);
+            start += 2 * i;
         }
         InterfaceIndex interfaceIndex = new InterfaceIndex(interfaceIndexes);
         classFile.setInterfaceIndex(interfaceIndex);
@@ -233,15 +235,15 @@ public class ClassParser {
      * 解析字段
      */
     private int _parseField(byte[] contents, int fieldIndexStart) {
-        int length = byteToInteger(Arrays.copyOfRange(contents, fieldIndexStart, fieldIndexStart + 2));
+        int length = byte2Int(Arrays.copyOfRange(contents, fieldIndexStart, fieldIndexStart + 2));
         List<Field> fields = new ArrayList<>(length);
         int start = fieldIndexStart + 2;
         for (int i = 1; i <= length; i++) {
-            int accessFlags = byteToInteger(Arrays.copyOfRange(contents, start, start + 2));
+            int accessFlags = byte2Int(Arrays.copyOfRange(contents, start, start + 2));
             List<FieldAccessFlag> fieldAccessFlags = _parseFieldAccessFlag(accessFlags);
-            int nameIndex = byteToInteger(Arrays.copyOfRange(contents, start + 2, start + 4));
-            int descriptorIndex = byteToInteger(Arrays.copyOfRange(contents, start + 4, start + 6));
-            int attributesCount = byteToInteger(Arrays.copyOfRange(contents, start + 6, start + 8));
+            int nameIndex = byte2Int(Arrays.copyOfRange(contents, start + 2, start + 4));
+            int descriptorIndex = byte2Int(Arrays.copyOfRange(contents, start + 4, start + 6));
+            int attributesCount = byte2Int(Arrays.copyOfRange(contents, start + 6, start + 8));
             Pair<List<AbstractAttribute>, Integer> pair = _parseFieldAttribute(contents, start + 8, attributesCount);
             fields.add(new Field(accessFlags, fieldAccessFlags, nameIndex, descriptorIndex, attributesCount, pair.getLeft(), classFile.getConstantPool()));
             start += (8 + pair.getRight());
@@ -300,7 +302,7 @@ public class ClassParser {
      * 解析方法
      */
     private int _parseMethod(byte[] contents, int methodIndexStart) {
-        int length = byteToInteger(Arrays.copyOfRange(contents, methodIndexStart, methodIndexStart + 2));
+        int length = byte2Int(Arrays.copyOfRange(contents, methodIndexStart, methodIndexStart + 2));
         //List<Method> methods = new ArrayList<>(length);
         Map<String, Method> methods = new HashMap<>(length);
         int start = methodIndexStart + 2;
