@@ -1,22 +1,26 @@
 package com.aaront.exercise.jvm.utils.string;
 
+import java.nio.ByteBuffer;
+
 /**
  * @author tonyhui
  * @since 17/6/13
  */
 public class ByteUtils {
-
-    // TODO: 17/6/30 这两个转换方法后序可以优化
-    public static int byte2Int(byte[] content) {
-        if(content.length >=4) throw new RuntimeException("长度不能超过4");
-        if (content.length == 2)
-            return ((content[0] << 8) | (content[1])) & 0x0000ffff;
-        return 0;
+    public static long byte2UnsignedInt(byte[] content) {
+        if(content.length == 1)
+            return ByteBuffer.wrap(content).getChar() & 0xff;
+        if(content.length == 2)
+            return ByteBuffer.wrap(content).getShort() & 0xffff;
+        if(content.length == 4)
+            return ByteBuffer.wrap(content).getInt() & 0xffffffffL;
+        throw new IllegalArgumentException("不合法的数组长度");
     }
 
-    public static long byte2UnsingedInt(byte[] content) {
-        if(content.length != 4) throw new RuntimeException("长度必须为4");
-        return (content[0] << 24 | content[1] << 16 | content[2] << 8 | content[3]) & 0x00000000ffffffffL;
+    public static int byte2Int(byte[] b) {
+        int value= 0;
+        for (byte aB : b) value = (value << 8) | aB;
+        return value;
     }
 
     public static String byteToHexString(byte[] codes) {

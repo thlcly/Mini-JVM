@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2Int;
-import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2UnsingedInt;
+import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2UnsignedInt;
 
 /**
  * @author tonyhui
@@ -52,13 +51,13 @@ public class Method {
 
     public static Method generateMethod(byte[] content, int start, ClassFile classFile) {
         ConstantPool pool = classFile.getConstantPool();
-        int accessFlag = byte2Int(Arrays.copyOfRange(content, start, start + 2));
+        int accessFlag = (int) byte2UnsignedInt(Arrays.copyOfRange(content, start, start + 2));
         List<MethodAccessFlag> methodAccessFlags = _parseMethodAccessFlag(accessFlag);
-        int nameIndex = byte2Int(Arrays.copyOfRange(content, start + 2, start + 4));
+        int nameIndex = (int) byte2UnsignedInt(Arrays.copyOfRange(content, start + 2, start + 4));
         String name = pool.getUTF8String(nameIndex);
-        int descriptorIndex = byte2Int(Arrays.copyOfRange(content, start + 4, start + 6));
+        int descriptorIndex = (int) byte2UnsignedInt(Arrays.copyOfRange(content, start + 4, start + 6));
         String descriptor = pool.getUTF8String(descriptorIndex);
-        int attributesCount = byte2Int(Arrays.copyOfRange(content, start + 6, start + 8));
+        int attributesCount = (int) byte2UnsignedInt(Arrays.copyOfRange(content, start + 6, start + 8));
         Pair<List<AbstractAttribute>, Integer> pair = _parseMethodAttribute(content, start + 8, attributesCount, classFile);
         return new Method(accessFlag, methodAccessFlags, nameIndex, name, descriptorIndex, descriptor, attributesCount, pair.getLeft(), pool, start, pair.getRight());
     }
@@ -114,9 +113,9 @@ public class Method {
         List<AbstractAttribute> attributes = new ArrayList<>();
         ConstantPool pool = classFile.getConstantPool();
         for (int i = 1; i <= count; i++) {
-            int index = byte2Int(Arrays.copyOfRange(content, start, start + 2));
+            int index = (int) byte2UnsignedInt(Arrays.copyOfRange(content, start, start + 2));
             // TODO: 17/6/30 这里先暂时强转, 后序数组拷贝要优化, 要支持long型的
-            int length = (int) byte2UnsingedInt(Arrays.copyOfRange(content, start + 2, start + 6));
+            int length = (int) byte2UnsignedInt(Arrays.copyOfRange(content, start + 2, start + 6));
             String attributeName = pool.getUTF8String(index);
             if (attributeName.equals("Code")) {
                 CodeAttribute codeAttribute = CodeAttribute.generateCodeAttribute(Arrays.copyOfRange(content, start + 6, start + 6 + length), index, length, classFile);
@@ -259,7 +258,11 @@ public class Method {
                 paramList.add("F");
                 pos++;
 
-            } else {
+            } else if (param.charAt(pos) == 'J') {
+                // long
+                paramList.add("J");
+                pos++;
+            }else {
                 // TODO: 17/6/23 后序还有添加java提供的其他基本数据类型
                 throw new RuntimeException("the param has unsupported type:" + param);
             }

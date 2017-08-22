@@ -34,7 +34,7 @@ public class InvokeVirtualCommand extends TwoOperandCommand {
     @Override
     public void execute(StackFrame frame, ExecutionResult result) {
         // TODO: 17/6/23 要对方法进行校验, 比如是父类方法, 是protected, private等
-        int methodIndex = ByteUtils.byte2Int(new byte[]{(byte) operand1, (byte) operand2});
+        int methodIndex = (int)ByteUtils.byte2UnsignedInt(new byte[]{(byte) operand1, (byte) operand2});
         MethodRefConstant methodRefConstant = (MethodRefConstant) frame.getPool().getConstantInfo(methodIndex);
         String className = methodRefConstant.getClassConstant().getClassName();
         String methodName = methodRefConstant.getNameAndTypeConstant().getName();
