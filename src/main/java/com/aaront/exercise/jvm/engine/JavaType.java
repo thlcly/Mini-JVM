@@ -11,7 +11,8 @@ public enum JavaType {
     OBJECT("object", 1),
     STRING("string", 2),
     INT("int", 3),
-    FLOAT("float", 4);
+    FLOAT("float", 4),
+    LONG("long", 5);
 
     private String name;
     private Integer value;

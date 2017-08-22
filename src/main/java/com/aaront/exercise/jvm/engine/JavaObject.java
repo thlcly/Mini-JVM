@@ -19,6 +19,8 @@ public class JavaObject {
 
     private float floatValue;
 
+    private long longValue;
+
     public void setFieldValue(String fieldName, JavaObject fieldValue) {
         fieldValues.put(fieldName, fieldValue);
     }
@@ -47,6 +49,14 @@ public class JavaObject {
         return this.intValue;
     }
 
+    public long getLongValue() {
+        return this.longValue;
+    }
+
+    public void setLongValue(long value) {
+        this.longValue = value;
+    }
+
     public JavaType getType() {
         return type;
     }
@@ -65,6 +75,8 @@ public class JavaObject {
                 return this.className + ":" + this.fieldValues;
             case FLOAT:
                 return String.valueOf(this.floatValue);
+            case LONG:
+                return String.valueOf(this.longValue);
             default:
                 return null;
         }

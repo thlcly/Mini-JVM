@@ -91,11 +91,31 @@ public class CommandParser {
                 return new AStoreNCommand(classFile, command.getCode(), 2);
             case ASTORE_3:
                 return new AStoreNCommand(classFile, command.getCode(), 3);
+            case LLOAD_0:
+                return new LLoadNCommand(classFile, command.getCode(), 0);
+            case LLOAD_1:
+                return new LLoadNCommand(classFile, command.getCode(), 1);
+            case LLOAD_2:
+                return new LLoadNCommand(classFile, command.getCode(), 2);
+            case LLOAD_3:
+                return new LLoadNCommand(classFile, command.getCode(), 3);
+            case LSTORE_0:
+                return new LStoreNCommand(classFile, command.getCode(), 0);
+            case LSTORE_1:
+                return new LStoreNCommand(classFile, command.getCode(), 1);
+            case LSTORE_2:
+                return new LStoreNCommand(classFile, command.getCode(), 2);
+            case LSTORE_3:
+                return new LStoreNCommand(classFile, command.getCode(), 3);
+            case LDC2_W:{
+                int operand1 = iter.next2CharAsInt();
+                int operand2 = iter.next2CharAsInt();
+                return new LDC2WCommand(classFile, command.getCode(), operand1, operand2);
+            }
             case ACONST_NULL:
             case LSTORE:
             case ILOAD:
             case FLOAD_3:
-            case LLOAD_0:
             case FLOAD_2:
             case IF_ICMP_GE:
             case IF_ICMPLE:

@@ -11,6 +11,10 @@ public enum Command {
     ACONST_NULL("01", "aconst_null"),
     NEW("BB", "new"),
     LSTORE("37", "lstore"),
+    LSTORE_0("3f", "lstore_0"),
+    LSTORE_1("40", "lstore_1"),
+    LSTORE_2("41", "lstore_2"),
+    LSTORE_3("42", "lstore_3"),
     INVOKESPECIAL("B7", "invokespecial"),
     INVOKEVIRTUAL("B6", "invokevirtual"),
     GETFIELD("B4", "getfield"),
@@ -28,6 +32,9 @@ public enum Command {
     ILOAD_3("1D", "iload_3"),
     FLOAD_3("25", "fload_3"),
     LLOAD_0("1E", "lload_0"),
+    LLOAD_1("1F", "lload_1"),
+    LLOAD_2("20", "lload_2"),
+    LLOAD_3("21", "lload_3"),
     FLOAD_2("24", "fload_2"),
     ASTORE_0("4B", "astore_0"),
     ASTORE_1("4C", "astore_1"),
@@ -46,7 +53,8 @@ public enum Command {
     DUP("59", "dup"),
     IADD("60", "iadd"),
     IINC("84", "iinc"),
-    LDC("12", "ldc");
+    LDC("12", "ldc"),
+    LDC2_W("14", "ldc2_w");
 
     private String code;
     private String cmd;
