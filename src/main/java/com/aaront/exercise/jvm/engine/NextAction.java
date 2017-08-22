@@ -1,9 +1,14 @@
 package com.aaront.exercise.jvm.engine;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * @author tonyhui
  * @since 17/6/20
  */
+@Getter
+@AllArgsConstructor
 public enum NextAction {
     /**
      * 只定义了测试程序用到的执行结果, 后序需要补充
@@ -15,17 +20,4 @@ public enum NextAction {
 
     private String name;
     private int code;
-
-    NextAction(String name, int code) {
-        this.name = name;
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getCode() {
-        return code;
-    }
 }

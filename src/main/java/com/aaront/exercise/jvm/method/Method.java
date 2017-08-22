@@ -5,6 +5,7 @@ import com.aaront.exercise.jvm.accessflag.MethodAccessFlag;
 import com.aaront.exercise.jvm.attribute.AbstractAttribute;
 import com.aaront.exercise.jvm.attribute.CodeAttribute;
 import com.aaront.exercise.jvm.constant.ConstantPool;
+import lombok.Data;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2UnsignedInt;
  * @author tonyhui
  * @since 17/6/12
  */
+@Data
 public class Method {
     private int accessFlag;
     private List<MethodAccessFlag> accessFlags = new ArrayList<>();
@@ -30,9 +32,6 @@ public class Method {
     private ConstantPool pool;
     private int startIndexInclude;
     private int endIndexExclude;
-
-    public Method() {
-    }
 
     public Method(int accessFlag, List<MethodAccessFlag> accessFlags, int nameIndex, String name, int descriptorIndex, String descriptor, int attributesCount, List<AbstractAttribute> attributes, ConstantPool pool, int startIndexInclude, int endIndexExclude) {
         this.accessFlag = accessFlag;
@@ -124,102 +123,6 @@ public class Method {
             start = start + 6 + length;
         }
         return Pair.of(attributes, start);
-    }
-
-    public int getAccessFlag() {
-        return accessFlag;
-    }
-
-    public void setAccessFlag(int accessFlag) {
-        this.accessFlag = accessFlag;
-    }
-
-    public List<MethodAccessFlag> getAccessFlags() {
-        return accessFlags;
-    }
-
-    public void setAccessFlags(List<MethodAccessFlag> accessFlags) {
-        this.accessFlags = accessFlags;
-    }
-
-    public int getNameIndex() {
-        return nameIndex;
-    }
-
-    public void setNameIndex(int nameIndex) {
-        this.nameIndex = nameIndex;
-    }
-
-    public int getDescriptorIndex() {
-        return descriptorIndex;
-    }
-
-    public void setDescriptorIndex(int descriptorIndex) {
-        this.descriptorIndex = descriptorIndex;
-    }
-
-    public int getAttributesCount() {
-        return attributesCount;
-    }
-
-    public void setAttributesCount(int attributesCount) {
-        this.attributesCount = attributesCount;
-    }
-
-    public List<AbstractAttribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<AbstractAttribute> attributes) {
-        this.attributes = attributes;
-    }
-
-    public ConstantPool getPool() {
-        return pool;
-    }
-
-    public void setPool(ConstantPool pool) {
-        this.pool = pool;
-    }
-
-    public int getStartIndexInclude() {
-        return startIndexInclude;
-    }
-
-    public void setStartIndexInclude(int startIndexInclude) {
-        this.startIndexInclude = startIndexInclude;
-    }
-
-    public int getEndIndexExclude() {
-        return endIndexExclude;
-    }
-
-    public void setEndIndexExclude(int endIndexExclude) {
-        this.endIndexExclude = endIndexExclude;
-    }
-
-    public CodeAttribute getCodeAttribute() {
-        return codeAttribute;
-    }
-
-    public void setCodeAttribute(CodeAttribute codeAttribute) {
-        this.codeAttribute = codeAttribute;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescriptor() {
-        return descriptor;
-    }
-
-    public void setDescriptor(String descriptor) {
-        this.descriptor = descriptor;
     }
 
     public List<String> getParameterList() {

@@ -1,5 +1,9 @@
 package com.aaront.exercise.jvm.attribute;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,21 +14,14 @@ import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2UnsignedInt;
  * @author tonyhui
  * @since 17/6/12
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
 public class LineNumberTableAttribute extends AbstractAttribute {
     private int attributeNameIndex;
     private int attributeLength;
     private int lineNumberTableLength;
     private List<LineNumberTable> lineNumberTables = new ArrayList<>();
-
-    public LineNumberTableAttribute() {
-    }
-
-    public LineNumberTableAttribute(int attributeNameIndex, int attributeLength, int lineNumberTableLength, List<LineNumberTable> lineNumberTables) {
-        this.attributeNameIndex = attributeNameIndex;
-        this.attributeLength = attributeLength;
-        this.lineNumberTableLength = lineNumberTableLength;
-        this.lineNumberTables = lineNumberTables;
-    }
 
 
     public static LineNumberTableAttribute generateLineNumberTableAttribute(byte[] content, int index, int length) {
@@ -38,38 +35,5 @@ public class LineNumberTableAttribute extends AbstractAttribute {
             start += 4;
         }
         return new LineNumberTableAttribute(index, length, lineNumberTableLength, lineNumberTables);
-    }
-
-
-    public int getAttributeLength() {
-        return attributeLength;
-    }
-
-    public void setAttributeLength(int attributeLength) {
-        this.attributeLength = attributeLength;
-    }
-
-    public int getLineNumberTableLength() {
-        return lineNumberTableLength;
-    }
-
-    public void setLineNumberTableLength(int lineNumberTableLength) {
-        this.lineNumberTableLength = lineNumberTableLength;
-    }
-
-    public List<LineNumberTable> getLineNumberTables() {
-        return lineNumberTables;
-    }
-
-    public void setLineNumberTables(List<LineNumberTable> lineNumberTables) {
-        this.lineNumberTables = lineNumberTables;
-    }
-
-    public int getAttributeNameIndex() {
-        return attributeNameIndex;
-    }
-
-    public void setAttributeNameIndex(int attributeNameIndex) {
-        this.attributeNameIndex = attributeNameIndex;
     }
 }

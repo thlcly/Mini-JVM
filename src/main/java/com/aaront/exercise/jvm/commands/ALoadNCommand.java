@@ -2,25 +2,23 @@ package com.aaront.exercise.jvm.commands;
 
 import com.aaront.exercise.jvm.ClassFile;
 import com.aaront.exercise.jvm.constant.ConstantPool;
-import com.aaront.exercise.jvm.engine.*;
+import com.aaront.exercise.jvm.engine.ExecutionResult;
+import com.aaront.exercise.jvm.engine.JavaObject;
+import com.aaront.exercise.jvm.engine.StackFrame;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author tonyhui
  * @since 17/6/17
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class ALoadNCommand extends NoOperandCommand {
     private int pos;
 
     public ALoadNCommand(ClassFile clzFile, String opCode, int pos) {
         super(clzFile, opCode);
-        this.pos = pos;
-    }
-
-    public int getPos() {
-        return pos;
-    }
-
-    public void setPos(int pos) {
         this.pos = pos;
     }
 

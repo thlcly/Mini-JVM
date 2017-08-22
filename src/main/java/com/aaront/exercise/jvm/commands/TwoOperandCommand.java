@@ -5,11 +5,15 @@ import com.aaront.exercise.jvm.constant.ClassConstant;
 import com.aaront.exercise.jvm.constant.ConstantPool;
 import com.aaront.exercise.jvm.constant.FieldRefConstant;
 import com.aaront.exercise.jvm.constant.MethodRefConstant;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author tonyhui
  * @since 17/6/17
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public abstract class TwoOperandCommand extends AbstractCommand {
 
     protected int operand1;
@@ -44,22 +48,6 @@ public abstract class TwoOperandCommand extends AbstractCommand {
         String codeTxt = getReadableCodeText();
         FieldRefConstant info = (FieldRefConstant) this.getConstantInfo(index);
         return this.getOffset() + ":" + this.getOpCode() + " " + codeTxt + "  " + info.toString();
-    }
-
-    public int getOperand1() {
-        return operand1;
-    }
-
-    public void setOperand1(int operand1) {
-        this.operand1 = operand1;
-    }
-
-    public int getOperand2() {
-        return operand2;
-    }
-
-    public void setOperand2(int operand2) {
-        this.operand2 = operand2;
     }
 
     @Override

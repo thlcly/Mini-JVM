@@ -1,9 +1,14 @@
 package com.aaront.exercise.jvm.constant;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * @author tonyhui
  * @since 17/6/5
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class NameAndTypeConstant extends AbstractConstant {
     private int nameIndex;
     private String name;
@@ -16,37 +21,13 @@ public class NameAndTypeConstant extends AbstractConstant {
         this.descriptorIndex = descriptorIndex;
     }
 
-    public int getNameIndex() {
-        return nameIndex;
-    }
-
-    public void setNameIndex(int nameIndex) {
-        this.nameIndex = nameIndex;
-    }
-
-    public int getDescriptorIndex() {
-        return descriptorIndex;
-    }
-
-    public void setDescriptorIndex(int descriptorIndex) {
-        this.descriptorIndex = descriptorIndex;
-    }
-
     public String getName() {
         if(name == null) name = pool.getUTF8String(nameIndex);
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescriptor() {
         if(descriptor == null) descriptor = pool.getUTF8String(descriptorIndex);
         return descriptor;
-    }
-
-    public void setDescriptor(String descriptor) {
-        this.descriptor = descriptor;
     }
 }

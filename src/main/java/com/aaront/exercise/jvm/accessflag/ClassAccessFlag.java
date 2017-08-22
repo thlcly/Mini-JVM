@@ -1,9 +1,14 @@
 package com.aaront.exercise.jvm.accessflag;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * @author tonyhui
  * @since 17/6/5
  */
+@AllArgsConstructor
+@Getter
 public enum ClassAccessFlag {
     ACC_PUBLIC(0X0001, "PUBLIC"),
     ACC_FINAL(0x0010, "FINAL"),
@@ -15,17 +20,4 @@ public enum ClassAccessFlag {
 
     private int code;
     private String name;
-
-    ClassAccessFlag(int code, String name) {
-        this.code = code;
-        this.name = name;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
-    }
 }

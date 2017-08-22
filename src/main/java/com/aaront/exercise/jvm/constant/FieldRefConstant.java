@@ -1,9 +1,14 @@
 package com.aaront.exercise.jvm.constant;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * @author tonyhui
  * @since 17/6/5
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class FieldRefConstant extends AbstractConstant {
     private int classIndex;
     private ClassConstant classConstant;
@@ -16,37 +21,13 @@ public class FieldRefConstant extends AbstractConstant {
         this.nameAndTypeIndex = nameAndTypeIndex;
     }
 
-    public int getClassIndex() {
-        return classIndex;
-    }
-
-    public void setClassIndex(int classIndex) {
-        this.classIndex = classIndex;
-    }
-
-    public int getNameAndTypeIndex() {
-        return nameAndTypeIndex;
-    }
-
-    public void setNameAndTypeIndex(int nameAndTypeIndex) {
-        this.nameAndTypeIndex = nameAndTypeIndex;
-    }
-
     public ClassConstant getClassConstant() {
         if(classConstant == null) classConstant = (ClassConstant) pool.getConstantInfo(classIndex);
         return classConstant;
     }
 
-    public void setClassConstant(ClassConstant classConstant) {
-        this.classConstant = classConstant;
-    }
-
     public NameAndTypeConstant getNameAndTypeConstant() {
         if(nameAndTypeConstant == null) nameAndTypeConstant = (NameAndTypeConstant) pool.getConstantInfo(nameAndTypeIndex);
         return nameAndTypeConstant;
-    }
-
-    public void setNameAndTypeConstant(NameAndTypeConstant nameAndTypeConstant) {
-        this.nameAndTypeConstant = nameAndTypeConstant;
     }
 }

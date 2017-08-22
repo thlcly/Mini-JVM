@@ -1,11 +1,15 @@
 package com.aaront.exercise.jvm.constant;
 
 import com.aaront.exercise.jvm.utils.string.ByteUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author tonyhui
  * @since 2017/8/8
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class LongConstant extends AbstractConstant {
 
     private long high;
@@ -21,13 +25,5 @@ public class LongConstant extends AbstractConstant {
         this.high = ByteUtils.byte2UnsignedInt(this.highBytes);
         this.low = ByteUtils.byte2UnsignedInt(this.lowBytes);
         this.value = (this.high << 32) + this.low;
-    }
-
-    public long getValue() {
-        return value;
-    }
-
-    public void setValue(long value) {
-        this.value = value;
     }
 }

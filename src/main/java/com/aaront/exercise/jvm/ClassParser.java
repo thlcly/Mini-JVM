@@ -29,7 +29,7 @@ public class ClassParser {
     private static final int CONSTANT_POOL_LENGTH_START = 8;
     private static final int CONSTANT_POOL_LENGTH_END = 10;
     private static final int CONSTANT_POOL_START = 10;
-    
+
     private static final byte CONSTANT_UTF8 = 1;
     private static final byte CONSTANT_INTEGER = 3;
     private static final byte CONSTANT_FLOAT = 4;

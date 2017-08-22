@@ -1,5 +1,7 @@
 package com.aaront.exercise.jvm.constant;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import java.util.List;
  * @author tonyhui
  * @since 17/6/6
  */
+@Data
 public class ConstantPool {
     private List<AbstractConstant> abstractConstant = new ArrayList<>();
 
@@ -16,10 +19,6 @@ public class ConstantPool {
 
     public ConstantPool() {
 
-    }
-
-    public void addConstantInfo(AbstractConstant info) {
-        this.abstractConstant.add(info);
     }
 
     public AbstractConstant getConstantInfo(int index) {
@@ -32,13 +31,5 @@ public class ConstantPool {
 
     public int getSize() {
         return this.abstractConstant.size() - 1;
-    }
-
-    public List<AbstractConstant> getAbstractConstant() {
-        return abstractConstant;
-    }
-
-    public void setAbstractConstant(List<AbstractConstant> abstractConstant) {
-        this.abstractConstant = abstractConstant;
     }
 }

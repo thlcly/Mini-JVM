@@ -1,9 +1,14 @@
 package com.aaront.exercise.jvm.engine;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * @author tonyhui
  * @since 17/6/23
  */
+@Getter
+@AllArgsConstructor
 public enum JavaType {
     /**
      * 只定义了测试程序用到的类型, 后序还要完善
@@ -16,17 +21,4 @@ public enum JavaType {
 
     private String name;
     private Integer value;
-
-    JavaType(String name, Integer value) {
-        this.name = name;
-        this.value = value;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Integer getValue() {
-        return value;
-    }
 }

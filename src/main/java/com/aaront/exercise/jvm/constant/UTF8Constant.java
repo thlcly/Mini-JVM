@@ -1,9 +1,14 @@
 package com.aaront.exercise.jvm.constant;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * @author tonyhui
  * @since 17/6/5
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class UTF8Constant extends AbstractConstant {
     // 2个字节长度
     private int length;
@@ -15,29 +20,5 @@ public class UTF8Constant extends AbstractConstant {
         this.length = length;
         this.content = content;
         this.value = new String(content);
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public byte[] getContent() {
-        return content;
-    }
-
-    public void setContent(byte[] content) {
-        this.content = content;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
     }
 }

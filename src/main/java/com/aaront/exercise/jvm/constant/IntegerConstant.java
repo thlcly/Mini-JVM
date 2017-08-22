@@ -1,11 +1,15 @@
 package com.aaront.exercise.jvm.constant;
 
 import com.aaront.exercise.jvm.utils.string.ByteUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author tonyhui
  * @since 17/6/23
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class IntegerConstant extends AbstractConstant {
 
     private int value;
@@ -15,13 +19,5 @@ public class IntegerConstant extends AbstractConstant {
         super(tag, pool);
         this.content = content;
         this.value = ByteUtils.byte2Int(this.content);
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
     }
 }

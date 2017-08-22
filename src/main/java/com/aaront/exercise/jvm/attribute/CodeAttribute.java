@@ -5,6 +5,8 @@ import com.aaront.exercise.jvm.commands.AbstractCommand;
 import com.aaront.exercise.jvm.commands.CommandParser;
 import com.aaront.exercise.jvm.constant.ConstantPool;
 import com.aaront.exercise.jvm.utils.string.ByteUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +18,8 @@ import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2UnsignedInt;
  * @author tonyhui
  * @since 17/6/9
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class CodeAttribute extends AbstractAttribute {
     private int attributeNameIndex;
     private int attributeLength;
@@ -84,122 +88,5 @@ public class CodeAttribute extends AbstractAttribute {
     private static List<ExceptionAttribute> _parseExceptionInfo(byte[] exceptionContent) {
         // TODO: 17/6/12 后序实现
         return new ArrayList<>();
-    }
-
-    public CodeAttribute(int attributeNameIndex, int attributeLength, int maxStack, int maxLocals, int codeLength, byte[] code, int exceptionTableLength, List<ExceptionAttribute> exceptionTable, int attributesCount, List<AbstractAttribute> attributes) {
-        this.attributeNameIndex = attributeNameIndex;
-        this.attributeLength = attributeLength;
-        this.maxStack = maxStack;
-        this.maxLocals = maxLocals;
-        this.codeLength = codeLength;
-        this.code = code;
-        this.exceptionTableLength = exceptionTableLength;
-        this.exceptionTable = exceptionTable;
-        this.attributesCount = attributesCount;
-        this.attributes = attributes;
-    }
-
-    public int getAttributeNameIndex() {
-        return attributeNameIndex;
-    }
-
-    public void setAttributeNameIndex(int attributeNameIndex) {
-        this.attributeNameIndex = attributeNameIndex;
-    }
-
-    public int getAttributeLength() {
-        return attributeLength;
-    }
-
-    public void setAttributeLength(int attributeLength) {
-        this.attributeLength = attributeLength;
-    }
-
-    public int getMaxStack() {
-        return maxStack;
-    }
-
-    public void setMaxStack(int maxStack) {
-        this.maxStack = maxStack;
-    }
-
-    public int getMaxLocals() {
-        return maxLocals;
-    }
-
-    public void setMaxLocals(int maxLocals) {
-        this.maxLocals = maxLocals;
-    }
-
-    public int getCodeLength() {
-        return codeLength;
-    }
-
-    public void setCodeLength(int codeLength) {
-        this.codeLength = codeLength;
-    }
-
-    public byte[] getCode() {
-        return code;
-    }
-
-    public void setCode(byte[] code) {
-        this.code = code;
-    }
-
-    public String getCodeText() {
-        return codeText;
-    }
-
-    public void setCodeText(String codeText) {
-        this.codeText = codeText;
-    }
-
-    public int getExceptionTableLength() {
-        return exceptionTableLength;
-    }
-
-    public void setExceptionTableLength(int exceptionTableLength) {
-        this.exceptionTableLength = exceptionTableLength;
-    }
-
-    public List<ExceptionAttribute> getExceptionTable() {
-        return exceptionTable;
-    }
-
-    public void setExceptionTable(List<ExceptionAttribute> exceptionTable) {
-        this.exceptionTable = exceptionTable;
-    }
-
-    public int getAttributesCount() {
-        return attributesCount;
-    }
-
-    public void setAttributesCount(int attributesCount) {
-        this.attributesCount = attributesCount;
-    }
-
-    public List<AbstractAttribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<AbstractAttribute> attributes) {
-        this.attributes = attributes;
-    }
-
-    public List<AbstractCommand> getCommands() {
-        return commands;
-    }
-
-    public void setCommands(List<AbstractCommand> commands) {
-        this.commands = commands;
-    }
-
-    public ClassFile getClassFile() {
-        return classFile;
-    }
-
-    public void setClassFile(ClassFile classFile) {
-        this.classFile = classFile;
     }
 }

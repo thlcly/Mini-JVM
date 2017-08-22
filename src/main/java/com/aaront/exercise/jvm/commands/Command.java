@@ -1,11 +1,16 @@
 package com.aaront.exercise.jvm.commands;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.Arrays;
 
 /**
  * @author tonyhui
  * @since 17/6/17
  */
+@Getter
+@AllArgsConstructor
 public enum Command {
 
     ACONST_NULL("01", "aconst_null"),
@@ -61,18 +66,5 @@ public enum Command {
 
     public static Command byCode(String code) {
         return Arrays.stream(Command.values()).filter(r -> r.getCode().equals(code)).findAny().orElse(null);
-    }
-
-    Command(String code, String cmd) {
-        this.code = code;
-        this.cmd = cmd;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getCmd() {
-        return cmd;
     }
 }

@@ -1,9 +1,12 @@
 package com.aaront.exercise.jvm.constant;
 
+import lombok.Data;
+
 /**
  * @author tonyhui
  * @since 17/6/5
  */
+@Data
 public abstract class AbstractConstant {
     protected int tag;
     protected ConstantPool pool;
@@ -12,21 +15,4 @@ public abstract class AbstractConstant {
         this.tag = tag;
         this.pool = pool;
     }
-
-    public ConstantPool getPool() {
-        return pool;
-    }
-
-    public void setPool(ConstantPool pool) {
-        this.pool = pool;
-    }
-
-    public void setTag(int tag) {
-        this.tag = tag;
-    }
-
-    public int getTag(int tag) {
-        return tag;
-    }
-
 }

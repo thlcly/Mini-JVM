@@ -1,5 +1,8 @@
 package com.aaront.exercise.jvm.index;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,21 +10,8 @@ import java.util.List;
  * @author tonyhui
  * @since 17/6/9
  */
+@Data
+@AllArgsConstructor
 public class InterfaceIndex {
     private List<Integer> interfaceIndexs = new ArrayList<>();
-
-    public InterfaceIndex() {
-    }
-
-    public InterfaceIndex(List<Integer> interfaceIndexs) {
-        this.interfaceIndexs = interfaceIndexs;
-    }
-
-    public List<Integer> getInterfaceIndexs() {
-        return interfaceIndexs;
-    }
-
-    public void setInterfaceIndexs(List<Integer> interfaceIndexs) {
-        this.interfaceIndexs = interfaceIndexs;
-    }
 }

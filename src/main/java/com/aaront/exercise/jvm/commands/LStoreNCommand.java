@@ -12,6 +12,7 @@ import com.aaront.exercise.jvm.engine.StackFrame;
  */
 public class LStoreNCommand extends NoOperandCommand {
     int pos;
+
     public LStoreNCommand(ClassFile classFile, String opCode, int pos) {
         super(classFile, opCode);
         this.pos = pos;
@@ -19,7 +20,7 @@ public class LStoreNCommand extends NoOperandCommand {
 
     @Override
     public String toString(ConstantPool pool) {
-        return this.getOffset()+": "+ this.getOpCode()+" " + this.getReadableCodeText();
+        return this.getOffset() + ": " + this.getOpCode() + " " + this.getReadableCodeText();
     }
 
     /**

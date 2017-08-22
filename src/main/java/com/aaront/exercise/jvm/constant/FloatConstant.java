@@ -1,11 +1,15 @@
 package com.aaront.exercise.jvm.constant;
 
 import com.aaront.exercise.jvm.utils.string.ByteUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author tonyhui
  * @since 17/6/23
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class FloatConstant extends AbstractConstant {
 
     private float value;
@@ -27,13 +31,5 @@ public class FloatConstant extends AbstractConstant {
         int m = (e == 0) ?
                 (bits & 0x7fffff) << 1 : (bits & 0x7fffff) | 0x800000;
         return s * m * 2 << (e - 150);
-    }
-
-    public float getValue() {
-        return value;
-    }
-
-    public void setValue(float value) {
-        this.value = value;
     }
 }

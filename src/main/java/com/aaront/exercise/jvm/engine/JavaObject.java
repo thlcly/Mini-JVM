@@ -1,5 +1,7 @@
 package com.aaront.exercise.jvm.engine;
 
+import lombok.Data;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +9,7 @@ import java.util.Map;
  * @author tonyhui
  * @since 17/6/19
  */
+@Data
 public class JavaObject {
     private JavaType type;
     private String className;
@@ -29,38 +32,6 @@ public class JavaObject {
         this.type = type;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public void setStringValue(String value) {
-        stringValue = value;
-    }
-
-    public String getStringValue() {
-        return this.stringValue;
-    }
-
-    public void setIntValue(int value) {
-        this.intValue = value;
-    }
-
-    public int getIntValue() {
-        return this.intValue;
-    }
-
-    public long getLongValue() {
-        return this.longValue;
-    }
-
-    public void setLongValue(long value) {
-        this.longValue = value;
-    }
-
-    public JavaType getType() {
-        return type;
-    }
-
     public JavaObject getFieldValue(String fieldName) {
         return this.fieldValues.get(fieldName);
     }
@@ -81,13 +52,4 @@ public class JavaObject {
                 return null;
         }
     }
-
-    public String getClassName() {
-        return this.className;
-    }
-
-    public void setFloatValue(float value) {
-        this.floatValue = value;
-    }
-
 }
