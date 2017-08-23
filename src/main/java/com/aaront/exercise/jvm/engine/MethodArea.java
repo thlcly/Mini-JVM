@@ -4,6 +4,7 @@ import com.aaront.exercise.jvm.ClassFile;
 import com.aaront.exercise.jvm.constant.MethodRefConstant;
 import com.aaront.exercise.jvm.loader.ClassFileLoader;
 import com.aaront.exercise.jvm.method.Method;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class MethodArea {
     }
 
     public static MethodArea getInstance() {
-        if(instance == null) throw new RuntimeException("instance还没有初始化");
+        if (instance == null) throw new RuntimeException("instance还没有初始化");
         return instance;
     }
 
@@ -48,8 +49,8 @@ public class MethodArea {
      * 查找main方法
      */
     public Optional<Method> queryMainMethod(ClassFile classFile) {
-        if(classFile == null) throw new RuntimeException("classFile不能为null");
-        return Optional.ofNullable(classFile.getMethods().get("([Ljava/lang/String;)V"));
+        if (classFile == null) throw new RuntimeException("classFile不能为null");
+        return Optional.ofNullable(classFile.getMethods().get(Pair.of("main", "([Ljava/lang/String;)V")));
     }
 
     /**
@@ -83,6 +84,6 @@ public class MethodArea {
      */
     public Method getMethod(MethodRefConstant methodRef) throws IOException {
         ClassFile clz = this.findClassFile(methodRef.getClassConstant().getClassName().replaceAll("/", "\\."));
-        return Optional.ofNullable(clz.getMethods().get(methodRef.getNameAndTypeConstant().getDescriptor())).orElseThrow(() -> new RuntimeException("没有找到指定的方法, methodRef:" + methodRef));
+        return Optional.ofNullable(clz.getMethods().get(Pair.of(methodRef.getNameAndTypeConstant().getName(), methodRef.getNameAndTypeConstant().getDescriptor()))).orElseThrow(() -> new RuntimeException("没有找到指定的方法, methodRef:" + methodRef));
     }
 }

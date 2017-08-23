@@ -22,7 +22,7 @@ public class MiniJVM {
     }
 
     public static void main(String[] args) throws IOException {
-        String className = "com.aaront.exercise.jvm.EmployeeV1";
+        String className = "com.aaront.exercise.jvm.EmployeeV2";
         String PATH1 = "./target/classes";
         String PATH2 = "./classes";
         String[] classPaths = {PATH1, PATH2};

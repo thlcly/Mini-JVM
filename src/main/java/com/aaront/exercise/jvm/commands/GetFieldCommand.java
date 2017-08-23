@@ -30,7 +30,7 @@ public class GetFieldCommand extends TwoOperandCommand {
         // TODO: 17/6/23 要对字段类型进行校验
         int fieldIndex = (int)ByteUtils.byte2UnsignedInt(new byte[]{(byte) operand1, (byte) operand2});
         FieldRefConstant fieldRefConstant = (FieldRefConstant) frame.getPool().getConstantInfo(fieldIndex);
-        JavaObject javaObject = frame.getOperandStack().peek();
+        JavaObject javaObject = frame.getOperandStack().pop();
         JavaObject fieldValue = javaObject.getFieldValue(fieldRefConstant.getNameAndTypeConstant().getDescriptor());
         frame.getOperandStack().push(fieldValue);
     }

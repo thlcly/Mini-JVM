@@ -9,6 +9,7 @@ import com.aaront.exercise.jvm.constant.*;
 import com.aaront.exercise.jvm.field.Field;
 import com.aaront.exercise.jvm.index.ClassIndex;
 import com.aaront.exercise.jvm.method.Method;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -71,7 +72,7 @@ public class ClassFileLoaderTest {
     }
 
     private String byteToHexString(byte[] codes) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (int i = 0; i < codes.length; i++) {
             byte b = codes[i];
             // 因为class文件中的字节是无符号的, 但是byte是有符号的, 所以有可能从class文件中读取的数据赋值给byte之后变成负数
@@ -191,17 +192,17 @@ public class ClassFileLoaderTest {
 
     @Test
     public void testMethods1() {
-        Map<String, Method> methods = clzFile.getMethods();
+        Map<Pair<String, String>, Method> methods = clzFile.getMethods();
         Assert.assertEquals(5, methods.size());
     }
 
     @Test
     public void testMethods2() {
-        Map<String, Method> methods = clzFile.getMethods();
+        Map<Pair<String, String>, Method> methods = clzFile.getMethods();
         ConstantPool pool = clzFile.getConstantPool();
 
         {
-            Method m = methods.get("(Ljava/lang/String;I)V");
+            Method m = methods.get(Pair.of("<init>", "(Ljava/lang/String;I)V"));
             assertMethodEquals(pool, m,
                                "<init>",
                                "(Ljava/lang/String;I)V",
@@ -209,7 +210,7 @@ public class ClassFileLoaderTest {
 
         }
         {
-            Method m = methods.get("(Ljava/lang/String;)V");
+            Method m = methods.get(Pair.of("setName", "(Ljava/lang/String;)V"));
             assertMethodEquals(pool, m,
                                "setName",
                                "(Ljava/lang/String;)V",
@@ -217,14 +218,14 @@ public class ClassFileLoaderTest {
 
         }
         {
-            Method m = methods.get("(I)V");
+            Method m = methods.get(Pair.of("setAge", "(I)V"));
             assertMethodEquals(pool, m,
                                "setAge",
                                "(I)V",
                                "2a1bb50003b1");
         }
         {
-            Method m = methods.get("()V");
+            Method m = methods.get(Pair.of("sayHello", "()V"));
             assertMethodEquals(pool, m,
                                "sayHello",
                                "()V",
@@ -232,7 +233,7 @@ public class ClassFileLoaderTest {
 
         }
         {
-            Method m = methods.get("([Ljava/lang/String;)V");
+            Method m = methods.get(Pair.of("main", "([Ljava/lang/String;)V"));
             assertMethodEquals(pool, m,
                                "main",
                                "([Ljava/lang/String;)V",
@@ -253,7 +254,7 @@ public class ClassFileLoaderTest {
     public void testByteCodeCommand() {
         {
             //Method initMethod = this.clzFile.getMethod("<init>", "(Ljava/lang/String;I)V");
-            Method initMethod = this.clzFile.getMethods().get("(Ljava/lang/String;I)V");
+            Method initMethod = this.clzFile.getMethods().get(Pair.of("<init>", "(Ljava/lang/String;I)V"));
             List<AbstractCommand> cmds = initMethod.getCodeAttribute().getCommands();
 
             assertOpCodeEquals("0: aload_0", cmds.get(0));
@@ -269,7 +270,7 @@ public class ClassFileLoaderTest {
 
         {
             //Method setNameMethod = this.clzFile.getMethod("setName", "(Ljava/lang/String;)V");
-            Method setNameMethod = this.clzFile.getMethods().get("(Ljava/lang/String;)V");
+            Method setNameMethod = this.clzFile.getMethods().get(Pair.of("setName", "(Ljava/lang/String;)V"));
             List<AbstractCommand> cmds = setNameMethod.getCodeAttribute().getCommands();
 
             assertOpCodeEquals("0: aload_0", cmds.get(0));
@@ -281,7 +282,7 @@ public class ClassFileLoaderTest {
 
         {
             //Method sayHelloMethod = this.clzFile.getMethod("sayHello", "()V");
-            Method sayHelloMethod = this.clzFile.getMethods().get("()V");
+            Method sayHelloMethod = this.clzFile.getMethods().get(Pair.of("sayHello", "()V"));
             List<AbstractCommand> cmds = sayHelloMethod.getCodeAttribute().getCommands();
 
             assertOpCodeEquals("0: getstatic #4", cmds.get(0));
@@ -292,7 +293,7 @@ public class ClassFileLoaderTest {
         }
 
         {
-            Method mainMethod = this.clzFile.getMethods().get("([Ljava/lang/String;)V");
+            Method mainMethod = this.clzFile.getMethods().get(Pair.of("main", "([Ljava/lang/String;)V"));
 
             List<AbstractCommand> cmds = mainMethod.getCodeAttribute().getCommands();
 

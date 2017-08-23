@@ -74,11 +74,11 @@ public class CommandParser {
             case ILOAD_0:
                 return new ILoadNCommand(classFile, command.getCode(), 0);
             case ILOAD_1:
-                return new ILoadNCommand(classFile, command.getCode(), 0);
+                return new ILoadNCommand(classFile, command.getCode(), 1);
             case ILOAD_2:
-                return new ILoadNCommand(classFile, command.getCode(), 0);
+                return new ILoadNCommand(classFile, command.getCode(), 2);
             case ILOAD_3:
-                return new ILoadNCommand(classFile, command.getCode(), 0);
+                return new ILoadNCommand(classFile, command.getCode(), 3);
             case RETURN:
                 return new ReturnCommand(classFile, command.getCode());
             case DUP:
@@ -112,22 +112,46 @@ public class CommandParser {
                 int operand2 = iter.next2CharAsInt();
                 return new LDC2WCommand(classFile, command.getCode(), operand1, operand2);
             }
+            case IF_ICMP_GE: {
+                int operand1 = iter.next2CharAsInt();
+                int operand2 = iter.next2CharAsInt();
+                return new IFICmpGeCommand(classFile, command.getCode(), operand1, operand2);
+            }
+            case IF_ICMP_GT: {
+                int operand1 = iter.next2CharAsInt();
+                int operand2 = iter.next2CharAsInt();
+                return new IFICmpGtCommand(classFile, command.getCode(), operand1, operand2);
+            }
+            case GOTO: {
+                int operand1 = iter.next2CharAsInt();
+                int operand2 = iter.next2CharAsInt();
+                return new GoToCommand(classFile, command.getCode(), operand1, operand2);
+            }
+            case ICONST_M1: return new IConstNCommand(classFile, command.getCode(), -1);
+            case ICONST_0: return new IConstNCommand(classFile, command.getCode(), 0);
+            case ICONST_1: return new IConstNCommand(classFile, command.getCode(), 1);
+            case ICONST_2: return new IConstNCommand(classFile, command.getCode(), 2);
+            case ICONST_3: return new IConstNCommand(classFile, command.getCode(), 3);
+            case ICONST_4: return new IConstNCommand(classFile, command.getCode(), 4);
+            case ICONST_5: return new IConstNCommand(classFile, command.getCode(), 5);
+            case ISTORE_0: return new IStoreNCommand(classFile, command.getCode(), 0);
+            case ISTORE_1: return new IStoreNCommand(classFile, command.getCode(), 1);
+            case ISTORE_2: return new IStoreNCommand(classFile, command.getCode(), 2);
+            case ISTORE_3: return new IStoreNCommand(classFile, command.getCode(), 3);
+            case IADD: return new IAddCommand(classFile, command.getCode());
+            case IINC: {
+                int operand1 = iter.next2CharAsInt();
+                int operand2 = iter.next2CharAsInt();
+                return new IIncCommand(classFile, command.getCode(), operand1, operand2);
+            }
             case ACONST_NULL:
             case LSTORE:
             case ILOAD:
             case FLOAD_3:
             case FLOAD_2:
-            case IF_ICMP_GE:
-            case IF_ICMPLE:
-            case GOTO:
+            case IF_ICMP_LE:
             case IRETURN:
             case FRETURN:
-            case ICONST_0:
-            case ICONST_1:
-            case ISTORE_1:
-            case ISTORE_2:
-            case IADD:
-            case IINC:
             default:
                 throw new RuntimeException("当前虚拟机还不支持该指令, " + command.getCode());
         }

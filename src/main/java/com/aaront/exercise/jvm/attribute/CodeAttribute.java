@@ -21,8 +21,6 @@ import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2UnsignedInt;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CodeAttribute extends AbstractAttribute {
-    private int attributeNameIndex;
-    private int attributeLength;
     private int maxStack;
     private int maxLocals;
     private int codeLength;

@@ -47,8 +47,9 @@ public class ExecutionEngine {
                 frame = frames.peek();
                 commands = frame.getCommands();
                 i = frame.getIndex();
-            } else { // TODO: 17/6/22 一些其他情况后续再补充
-
+            } else if(result.isJump()) {
+                frame.setIndex(result.getNextCmdOffset());
+                i = result.getNextCmdOffset();
             }
         }
     }

@@ -1,8 +1,6 @@
 package com.aaront.exercise.jvm;
 
 import com.aaront.exercise.jvm.accessflag.ClassAccessFlag;
-import com.aaront.exercise.jvm.accessflag.FieldAccessFlag;
-import com.aaront.exercise.jvm.attribute.AbstractAttribute;
 import com.aaront.exercise.jvm.constant.*;
 import com.aaront.exercise.jvm.field.Field;
 import com.aaront.exercise.jvm.index.ClassIndex;
@@ -13,8 +11,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.*;
 
 import static com.aaront.exercise.jvm.accessflag.ClassAccessFlag.*;
-import static com.aaront.exercise.jvm.utils.string.ByteUtils.byteToHexString;
 import static com.aaront.exercise.jvm.utils.string.ByteUtils.byte2UnsignedInt;
+import static com.aaront.exercise.jvm.utils.string.ByteUtils.byteToHexString;
 
 /**
  * @author tonyhui
@@ -212,7 +210,7 @@ public class ClassParser {
         if ((accessFlag & ACC_ENUM.getCode()) != 0) {
             classAccessFlags.add(ACC_ENUM);
         }
-        classFile.setAccessFlag(classAccessFlags);
+        classFile.setAccessFlags(classAccessFlags);
         return accessFlagStart + 2;
     }
 
@@ -252,63 +250,12 @@ public class ClassParser {
         List<Field> fields = new ArrayList<>(length);
         int start = fieldIndexStart + 2;
         for (int i = 1; i <= length; i++) {
-            int accessFlags = (int) byte2UnsignedInt(Arrays.copyOfRange(contents, start, start + 2));
-            List<FieldAccessFlag> fieldAccessFlags = _parseFieldAccessFlag(accessFlags);
-            int nameIndex = (int) byte2UnsignedInt(Arrays.copyOfRange(contents, start + 2, start + 4));
-            int descriptorIndex = (int) byte2UnsignedInt(Arrays.copyOfRange(contents, start + 4, start + 6));
-            int attributesCount = (int) byte2UnsignedInt(Arrays.copyOfRange(contents, start + 6, start + 8));
-            Pair<List<AbstractAttribute>, Integer> pair = _parseFieldAttribute(contents, start + 8, attributesCount);
-            fields.add(new Field(accessFlags, fieldAccessFlags, nameIndex, descriptorIndex, attributesCount, pair.getLeft(), classFile.getConstantPool()));
-            start += (8 + pair.getRight());
+            Field field = Field.generateField(contents, start, classFile);
+            fields.add(field);
+            start = field.getEndIndexExclude();
         }
         classFile.setFields(fields);
         return start;
-    }
-
-    /**
-     * 解析字段修饰符
-     */
-    private List<FieldAccessFlag> _parseFieldAccessFlag(int accessFlag) {
-        List<FieldAccessFlag> fieldAccessFlags = new ArrayList<>();
-        if ((accessFlag & FieldAccessFlag.ACC_PUBLIC.getCode()) != 0) {
-            fieldAccessFlags.add(FieldAccessFlag.ACC_PUBLIC);
-        }
-        if ((accessFlag & FieldAccessFlag.ACC_PRIVATE.getCode()) != 0) {
-            fieldAccessFlags.add(FieldAccessFlag.ACC_PRIVATE);
-        }
-        if ((accessFlag & FieldAccessFlag.ACC_PROTECTED.getCode()) != 0) {
-            fieldAccessFlags.add(FieldAccessFlag.ACC_PROTECTED);
-        }
-        if ((accessFlag & FieldAccessFlag.ACC_STATIC.getCode()) != 0) {
-            fieldAccessFlags.add(FieldAccessFlag.ACC_STATIC);
-        }
-        if ((accessFlag & FieldAccessFlag.ACC_FINAL.getCode()) != 0) {
-            fieldAccessFlags.add(FieldAccessFlag.ACC_FINAL);
-        }
-        if ((accessFlag & FieldAccessFlag.ACC_VOLATILE.getCode()) != 0) {
-            fieldAccessFlags.add(FieldAccessFlag.ACC_VOLATILE);
-        }
-        if ((accessFlag & FieldAccessFlag.ACC_TRANSIENT.getCode()) != 0) {
-            fieldAccessFlags.add(FieldAccessFlag.ACC_TRANSIENT);
-        }
-        if ((accessFlag & FieldAccessFlag.ACC_SYNTHETIC.getCode()) != 0) {
-            fieldAccessFlags.add(FieldAccessFlag.ACC_SYNTHETIC);
-        }
-        if ((accessFlag & FieldAccessFlag.ACC_ENUM.getCode()) != 0) {
-            fieldAccessFlags.add(FieldAccessFlag.ACC_ENUM);
-        }
-        return fieldAccessFlags;
-    }
-
-    /**
-     * 解析字段属性
-     */
-    private Pair<List<AbstractAttribute>, Integer> _parseFieldAttribute(byte[] contents, int attributeStartIndex, int attributeCount) {
-        List<AbstractAttribute> attributes = new ArrayList<>();
-        for (int i = 1; i <= attributeCount; i++) {
-            // TODO: 17/6/12 后序添加解析字段属性的代码
-        }
-        return Pair.of(attributes, 0);
     }
 
     /**
@@ -317,11 +264,11 @@ public class ClassParser {
     private int _parseMethod(byte[] contents, int methodIndexStart) {
         int length = (int) byte2UnsignedInt(Arrays.copyOfRange(contents, methodIndexStart, methodIndexStart + 2));
         //List<Method> methods = new ArrayList<>(length);
-        Map<String, Method> methods = new HashMap<>(length);
+        Map<Pair<String, String>, Method> methods = new HashMap<>(length);
         int start = methodIndexStart + 2;
         for (int i = 0; i < length; i++) {
             Method method = Method.generateMethod(contents, start, classFile);
-            methods.put(method.getDescriptor(), method);
+            methods.put(Pair.of(method.getName(), method.getDescriptor()), method);
             start = method.getEndIndexExclude();
         }
         classFile.setMethods(methods);
