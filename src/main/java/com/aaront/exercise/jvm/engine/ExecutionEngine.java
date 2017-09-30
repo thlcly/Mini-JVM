@@ -37,7 +37,7 @@ public class ExecutionEngine {
             } else if (result.isPauseAndRunNewFrame()) { // 调用另一个函数
                 // 保存当前函数下一条要执行的命令
                 frame.setIndex(i + 1);
-                frame = _generateStackFrame(frame.getOperandStack(), result.getNextMethod());
+                frame = _generateStackFrame(frame, frame.getOperandStack(), result.getNextMethod());
                 frames.push(frame);
                 commands = frame.getCommands();
                 i = frame.getIndex();
@@ -54,8 +54,9 @@ public class ExecutionEngine {
         }
     }
 
-    private StackFrame _generateStackFrame(Stack<JavaObject> operandStack, Method method) {
+    private StackFrame _generateStackFrame(StackFrame callerFrame, Stack<JavaObject> operandStack, Method method) {
         StackFrame frame = new StackFrame(method);
+        frame.setCallerStackFrame(callerFrame);
         int paramSize = method.getParameterList().size() + 1;// 加1是因为还是把对象引用传入(可以理解成把this传入)
         _setParams(operandStack, frame, paramSize);
         return frame;

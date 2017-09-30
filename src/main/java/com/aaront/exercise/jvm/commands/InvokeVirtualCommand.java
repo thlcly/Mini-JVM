@@ -34,7 +34,7 @@ public class InvokeVirtualCommand extends TwoOperandCommand {
     @Override
     public void execute(StackFrame frame, ExecutionResult result) {
         // TODO: 17/6/23 要对方法进行校验, 比如是父类方法, 是protected, private等
-        int methodIndex = (int)ByteUtils.byte2UnsignedInt(new byte[]{(byte) operand1, (byte) operand2});
+        int methodIndex = (int) ByteUtils.byte2UnsignedInt(new byte[]{(byte) operand1, (byte) operand2});
         MethodRefConstant methodRefConstant = (MethodRefConstant) frame.getPool().getConstantInfo(methodIndex);
         String className = methodRefConstant.getClassConstant().getClassName();
         String methodName = methodRefConstant.getNameAndTypeConstant().getName();
@@ -49,9 +49,25 @@ public class InvokeVirtualCommand extends TwoOperandCommand {
             return;
         }
 
+        // 找到真正调用方法的对象(实际上就是this)
+        JavaObject javaObject = frame.getOperandStack().get(0);
+        String currentClassName = javaObject.getClassName();
+        MethodArea ma = MethodArea.getInstance();
+        Method m = null;
         try {
-            Method method = MethodArea.getInstance().getMethod(methodRefConstant);
-            result.setNextMethod(method);
+            while (currentClassName != null) {
+
+                ClassFile currentClassFile = ma.findClassFile(currentClassName);
+                m = currentClassFile.getMethod(methodRefConstant.getNameAndTypeConstant().getName(),
+                                               methodRefConstant.getNameAndTypeConstant().getDescriptor());
+                if (m != null) break;
+                //查找父类
+                currentClassName = currentClassFile.getSuperClassName();
+            }
+            if (m == null) {
+                throw new RuntimeException("Can't find method for :" + methodRefConstant.toString());
+            }
+            result.setNextMethod(m);
             result.setNextAction(PAUSE_AND_RUN_NEW_FRAME);
         } catch (IOException e) {
             throw new RuntimeException("没有指定的方法, error:" + e);

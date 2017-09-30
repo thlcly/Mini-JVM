@@ -1,6 +1,7 @@
 package com.aaront.exercise.jvm;
 
 import com.aaront.exercise.jvm.accessflag.ClassAccessFlag;
+import com.aaront.exercise.jvm.constant.ClassConstant;
 import com.aaront.exercise.jvm.constant.ConstantPool;
 import com.aaront.exercise.jvm.field.Field;
 import com.aaront.exercise.jvm.index.ClassIndex;
@@ -27,4 +28,25 @@ public class ClassFile {
     private List<ClassAccessFlag> accessFlags;
     private List<Field> fields;
     private Map<Pair<String, String>, Method> methods;
+
+    public String getSuperClassName(){
+        ClassConstant superClass = (ClassConstant)this.getConstantPool().getConstantInfo(this.classIndex.getSuperClassIndex());
+        return superClass.getClassName();
+    }
+
+    public Method getMethod(String methodName, String paramAndReturnType){
+
+        for(Method m :methods.values()){
+
+            int nameIndex = m.getNameIndex();
+            int descriptionIndex = m.getDescriptorIndex();
+
+            String name = this.getConstantPool().getUTF8String(nameIndex);
+            String desc = this.getConstantPool().getUTF8String(descriptionIndex);
+            if(name.equals(methodName) && desc.equals(paramAndReturnType)){
+                return m;
+            }
+        }
+        return null;
+    }
 }

@@ -17,6 +17,7 @@ public class StackFrame {
     // 下一条指令的位置(偏移量)
     private int index = 0;
     private JavaObject returnValue = null;
+    private StackFrame callerStackFrame;
     private ConstantPool pool;
     private Stack<JavaObject> operandStack;
     //这里最好是用数据来保存, 如果使用List会很不方便, 因为一些指令会对localVariableTable指定位置设置值, 如果使用List且List的size<所要设置的位置会报错

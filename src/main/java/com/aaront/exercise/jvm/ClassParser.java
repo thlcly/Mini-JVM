@@ -19,7 +19,7 @@ import static com.aaront.exercise.jvm.utils.string.ByteUtils.byteToHexString;
  * @since 17/6/5
  */
 public class ClassParser {
-    private ClassFile classFile = new ClassFile();
+    private ClassFile classFile;
     private static final int MAGIC_NUMBER_START = 0;
     private static final int MAGIC_NUMBER_END = 4;
     private static final int VERSION_START = 4;
@@ -45,6 +45,7 @@ public class ClassParser {
 
 
     public ClassFile parse(byte[] contents) {
+        classFile = new ClassFile();
         _parseMagicNumber(Arrays.copyOfRange(contents, MAGIC_NUMBER_START, MAGIC_NUMBER_END));
         _parseVersion(Arrays.copyOfRange(contents, VERSION_START, VERSION_END));
         int constantPoolEnd = _parseConstantPool(contents);

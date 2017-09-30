@@ -144,13 +144,13 @@ public class CommandParser {
                 int operand2 = iter.next2CharAsInt();
                 return new IIncCommand(classFile, command.getCode(), operand1, operand2);
             }
+            case IRETURN: return new IReturnCommand(classFile, command.getCode());
             case ACONST_NULL:
             case LSTORE:
             case ILOAD:
             case FLOAD_3:
             case FLOAD_2:
             case IF_ICMP_LE:
-            case IRETURN:
             case FRETURN:
             default:
                 throw new RuntimeException("当前虚拟机还不支持该指令, " + command.getCode());

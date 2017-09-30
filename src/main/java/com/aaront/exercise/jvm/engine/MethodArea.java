@@ -6,6 +6,7 @@ import com.aaront.exercise.jvm.loader.ClassFileLoader;
 import com.aaront.exercise.jvm.method.Method;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +58,7 @@ public class MethodArea {
      * 根据class name查找class file
      */
     public ClassFile findClassFile(String className) throws IOException {
-
+        className = className.replaceAll(File.separator, "\\.");
         if (map.get(className) != null) {
             return map.get(className);
         }
